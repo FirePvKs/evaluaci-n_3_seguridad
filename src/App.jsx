@@ -1,23 +1,25 @@
 import { useState } from 'react'
 import Resumen from './components/Resumen'
-import Marco from './components/Marco'
-import Delitos from './components/Delitos'
-import Comparacion from './components/Comparacion'
-import Responsabilidades from './components/Responsabilidades'
-import Datos from './components/Datos'
-import Conclusiones from './components/Conclusiones'
+import InyeccionSQL from './components/InyeccionSQL'
+import XSS from './components/XSS'
+import Comandos from './components/Comandos'
+import Activos from './components/Activos'
+import Matriz from './components/Matriz'
+import Controles from './components/Controles'
+import Recuperacion from './components/Recuperacion'
 import Prompts from './components/Prompts'
 import './App.css'
 
 const secciones = [
-  { id: 'resumen',           label: '01 Resumen',          componente: <Resumen /> },
-  { id: 'marco',             label: '02 Marco Normativo',  componente: <Marco /> },
-  { id: 'delitos',           label: '03 Delitos',          componente: <Delitos /> },
-  { id: 'comparacion',       label: '04 Comparacion',      componente: <Comparacion /> },
-  { id: 'responsabilidades', label: '05 Responsabilidades',componente: <Responsabilidades /> },
-  { id: 'datos',             label: '06 Datos Personales', componente: <Datos /> },
-  { id: 'conclusiones',      label: '07 Conclusiones',     componente: <Conclusiones /> },
-  { id: 'prompts',           label: '08 Bitacora IA',      componente: <Prompts /> },
+  { id: 'resumen',      label: '01 Resumen',       componente: <Resumen /> },
+  { id: 'sqli',         label: '02 SQLi',           componente: <InyeccionSQL /> },
+  { id: 'xss',          label: '03 XSS',            componente: <XSS /> },
+  { id: 'comandos',     label: '04 Comandos',       componente: <Comandos /> },
+  { id: 'activos',      label: '05 Activos',        componente: <Activos /> },
+  { id: 'matriz',       label: '06 Matriz',         componente: <Matriz /> },
+  { id: 'controles',    label: '07 Controles',      componente: <Controles /> },
+  { id: 'recuperacion', label: '08 Recuperación',   componente: <Recuperacion /> },
+  { id: 'prompts',      label: '09 Bitácora IA',    componente: <Prompts /> },
 ]
 
 export default function App() {
@@ -42,7 +44,7 @@ export default function App() {
           </div>
           <span className="topnav-brand">
             <span className="brand-badge">TI3034</span>
-            CVE-2026-3854
+            Auditoría Web · CrediExpress
           </span>
 
           {/* Desktop buttons */}
@@ -100,6 +102,7 @@ export default function App() {
           </div>
         </div>
       </main>
+
       <footer className="page-footer">
         <div className="footer-inner">
           <div className="footer-info">

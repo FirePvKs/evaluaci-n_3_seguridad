@@ -51,7 +51,7 @@ Utilizando la calculadora oficial de FIRST, se ha determinado que esta vulnerabi
 | Integridad (I) | High (H) | Permite la manipulación, alteración o borrado de registros de crédito si el usuario de la BD tiene permisos de escritura. |
 | Disponibilidad (A) | Low (L) | Podría causar denegación de servicio indirecta si se extraen bases de datos masivas. |
 
-> **Puntaje Base CVSS v3.1 Estimado: 9.8 (Critical)**
+> **Puntaje Base CVSS v3.1 Estimado: 9.4 (Critical)**
 > Vector: `CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:L`
 
 ---
