@@ -10,9 +10,9 @@ const getColor = (score) => {
 
 // Vulnerabilities: { prob (1-5), imp (1-5), label, badge }
 const vulns = [
-  { prob: 4, imp: 5, label: 'SQLi',  badge: '🔴', fullname: 'Inyección SQL'         },
-  { prob: 3, imp: 5, label: 'CMD',   badge: '🔴', fullname: 'Inyección de Comandos' },
-  { prob: 4, imp: 3, label: 'XSS',   badge: '🟠', fullname: 'XSS Reflejado'         },
+  { prob: 4, imp: 5, label: 'SQLi',  fullname: 'Inyección SQL'         },
+  { prob: 3, imp: 5, label: 'CMD',   fullname: 'Inyección de Comandos' },
+  { prob: 4, imp: 3, label: 'XSS',   fullname: 'XSS Reflejado'         },
 ]
 
 function getVuln(p, i) {

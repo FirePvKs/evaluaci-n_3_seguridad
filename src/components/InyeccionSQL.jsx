@@ -107,10 +107,10 @@ export default function InyeccionSQL() {
             <div>
               <strong>Consultas Parametrizadas (Prepared Statements):</strong> La base de datos recibe primero la instrucción con marcadores <code>?</code> y después el dato, tratándolo siempre como valor, nunca como código ejecutable.
               <div style={{ marginTop: '10px', background: 'var(--code-bg)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--mono)', fontSize: '12px' }}>
-                <div style={{ color: 'var(--accent)', marginBottom: '6px' }}>{'// ❌ VULNERABLE — portal actual de CrediExpress'}</div>
+                <div style={{ color: 'var(--accent)', marginBottom: '6px' }}>{'// [X] VULNERABLE — portal actual de CrediExpress'}</div>
                 <div>{`const sql = \`SELECT rut, nombre, saldo_credito FROM clientes WHERE id_cliente = '\${inputUsuario}'\`;`}</div>
                 <div style={{ color: 'var(--text)', fontSize: '11px', margin: '2px 0 6px', fontStyle: 'italic' }}>{'// Si inputUsuario = \' OR \'1\'=\'1 → filtra a TODOS los clientes'}</div>
-                <div style={{ color: '#27ae60', margin: '8px 0 4px' }}>{'// ✅ SEGURO — consulta parametrizada'}</div>
+                <div style={{ color: '#27ae60', margin: '8px 0 4px' }}>{'// [OK] SEGURO — consulta parametrizada'}</div>
                 <div>{'const sql = "SELECT rut, nombre, saldo_credito FROM clientes WHERE id_cliente = ?";'}</div>
                 <div>{'db.query(sql, [inputUsuario]); // inputUsuario nunca se interpreta como SQL'}</div>
               </div>

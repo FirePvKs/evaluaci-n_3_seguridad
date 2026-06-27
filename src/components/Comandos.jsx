@@ -122,10 +122,10 @@ export default function Comandos() {
               en lugar de invocar el binario <code>ping</code> del SO. Esto elimina
               completamente la superficie de ataque.
               <div style={{ marginTop: '10px', background: 'var(--code-bg)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--mono)', fontSize: '12px' }}>
-                <div style={{ color: 'var(--accent)', marginBottom: '4px' }}>{'// ❌ VULNERABLE — portal actual de CrediExpress'}</div>
+                <div style={{ color: 'var(--accent)', marginBottom: '4px' }}>{'// [X] VULNERABLE — portal actual de CrediExpress'}</div>
                 <div>{"const { exec } = require('child_process');"}</div>
                 <div>{"exec(`ping -c 4 ${ipIngresada}`); // el ; divide en 2 comandos"}</div>
-                <div style={{ color: '#27ae60', margin: '8px 0 4px' }}>{'// ✅ SEGURO — argumentos separados, sin invocar shell'}</div>
+                <div style={{ color: '#27ae60', margin: '8px 0 4px' }}>{'// [OK] SEGURO — argumentos separados, sin invocar shell'}</div>
                 <div>{"const { execFile } = require('child_process');"}</div>
                 <div>{"execFile('ping', ['-c', '4', ipIngresada], { shell: false });"}</div>
                 <div style={{ color: 'var(--text)', fontSize: '11px', fontStyle: 'italic', marginTop: '4px' }}>{'// ipIngresada nunca puede convertirse en un segundo comando'}</div>
@@ -139,7 +139,7 @@ export default function Comandos() {
               una dirección IP, rechazar en el backend cualquier valor que no cumpla el formato
               exacto antes de procesar la solicitud, sin permitir excepciones.
               <div style={{ marginTop: '10px', background: 'var(--code-bg)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--mono)', fontSize: '12px' }}>
-                <div style={{ color: '#27ae60', marginBottom: '4px' }}>{'// ✅ Validar formato antes de cualquier procesamiento'}</div>
+                <div style={{ color: '#27ae60', marginBottom: '4px' }}>{'// [OK] Validar formato antes de cualquier procesamiento'}</div>
                 <div>{"const ipRegex = /^(\\d{1,3}\\.){3}\\d{1,3}$/;"}</div>
                 <div>{"if (!ipRegex.test(ipIngresada)) {"}</div>
                 <div>{"  return res.status(400).json({ error: 'IP inválida' });"}</div>

@@ -112,10 +112,10 @@ export default function XSS() {
             <div>
               <strong>Codificación de Salida (Output Encoding):</strong> Los caracteres con significado HTML deben convertirse en sus entidades seguras antes de ser renderizados. Esto impide que el navegador los interprete como código. En React, las expresiones <code>{'{variable}'}</code> aplican esto automáticamente — el riesgo aparece solo si se usa <code>dangerouslySetInnerHTML</code>.
               <div style={{ marginTop: '10px', background: 'var(--code-bg)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--mono)', fontSize: '12px' }}>
-                <div style={{ color: 'var(--accent)', marginBottom: '4px' }}>{'// ❌ VULNERABLE — refleja nombre del cliente sin codificar'}</div>
+                <div style={{ color: 'var(--accent)', marginBottom: '4px' }}>{'// [X] VULNERABLE — refleja nombre del cliente sin codificar'}</div>
                 <div>{'document.getElementById("saludo").innerHTML = "Hola " + nombreCliente;'}</div>
                 <div style={{ color: 'var(--text)', fontSize: '11px', fontStyle: 'italic', margin: '2px 0 8px' }}>{'// Si nombreCliente = <script>... → el script se ejecuta en el portal'}</div>
-                <div style={{ color: '#27ae60', marginBottom: '4px' }}>{'// ✅ SEGURO — React codifica automáticamente'}</div>
+                <div style={{ color: '#27ae60', marginBottom: '4px' }}>{'// [OK] SEGURO — React codifica automáticamente'}</div>
                 <div>{'return <p>Hola {nombreCliente}</p>; // nunca ejecuta scripts'}</div>
               </div>
             </div>

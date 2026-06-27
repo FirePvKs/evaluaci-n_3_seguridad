@@ -1,3 +1,5 @@
+import Icon from './Icon'
+
 const controles = [
   {
     prioridad: 1,
@@ -16,10 +18,10 @@ const controles = [
         titulo: 'Consultas Parametrizadas obligatorias',
         desc: 'Todo desarrollo nuevo o actualización del portal debe implementar Prepared Statements o un ORM (Prisma o Sequelize). Esto garantiza la separación física entre las instrucciones del motor SQL y los datos introducidos por el cliente, haciendo imposible que un valor de entrada sea interpretado como código.',
         code: [
-          '// ❌ PROHIBIDO en CrediExpress',
-          'const sql = `SELECT * FROM clientes WHERE rut = \'${rutCliente}\'`;',
+          '// [X] PROHIBIDO en CrediExpress',
+          "const sql = `SELECT rut, nombre, saldo_credito FROM clientes WHERE id_cliente = '${rutCliente}'`;",
           '',
-          '// ✅ ESTÁNDAR OBLIGATORIO',
+          '// [OK] ESTÁNDAR OBLIGATORIO',
           'const sql = "SELECT saldo, historial FROM clientes WHERE rut = ?";',
           'db.query(sql, [rutCliente]);',
         ],
@@ -28,7 +30,7 @@ const controles = [
     mitigacion: [
       {
         titulo: 'WAF con reglas de inyección actualizadas diariamente',
-        desc: 'Configurar el Web Application Firewall corporativo para interceptar, alertar y bloquear automáticamente peticiones HTTP con patrones de inyección SQL (estructuras como \' OR 1=1, comentarios SQL --, UNION SELECT). Las reglas deben actualizarse con feeds de amenazas diariamente.',
+        desc: "Configurar el Web Application Firewall corporativo para interceptar, alertar y bloquear automáticamente peticiones HTTP con patrones de inyección SQL (estructuras como ' OR 1=1, comentarios SQL --, UNION SELECT). Las reglas deben actualizarse con feeds de amenazas diariamente.",
       },
       {
         titulo: 'Principio de menor privilegio en base de datos',
@@ -53,10 +55,10 @@ const controles = [
         titulo: 'Uso de execFile con argumentos separados',
         desc: 'Cualquier utilidad del sistema operativo estrictamente necesaria debe invocarse mediante APIs que pasen los argumentos como arreglo aislado, sin invocar shell. Esto neutraliza completamente el uso de metacaracteres como ;, && o |.',
         code: [
-          '// ❌ PROHIBIDO — input del cliente al shell',
-          "exec(`ping -c 4 ${ipIngresada}`);",
+          '// [X] PROHIBIDO — input del cliente al shell',
+          'exec(`ping -c 4 ${ipIngresada}`);',
           '',
-          '// ✅ ESTÁNDAR OBLIGATORIO — sin invocación de shell',
+          '// [OK] ESTÁNDAR OBLIGATORIO — sin invocación de shell',
           "execFile('ping', ['-c', '4', ipIngresada], { shell: false });",
           '// El ";" en ipIngresada es tratado como string, jamás como separador',
         ],
@@ -84,19 +86,19 @@ const controles = [
     prevencion: [
       {
         titulo: 'Codificación de salida contextual obligatoria',
-        desc: 'Todo dato dinámico mostrado en el Portal de Clientes debe pasar por output encoding antes de renderizarse. Los caracteres con significado HTML (<, >, ", \', &) se convierten a entidades seguras, impidiendo al navegador interpretarlos como código.',
+        desc: "Todo dato dinámico mostrado en el Portal de Clientes debe pasar por output encoding antes de renderizarse. Los caracteres con significado HTML (<, >, \", ', &) se convierten a entidades seguras, impidiendo al navegador interpretarlos como código.",
       },
       {
         titulo: 'Prohibición de dangerouslySetInnerHTML sin revisión',
         desc: 'En React, el renderizado nativo con {variable} aplica encoding automáticamente. Se prohíbe taxativamente el uso de dangerouslySetInnerHTML salvo autorización explícita tras revisión de seguridad. Para contenido HTML legítimo, usar DOMPurify como sanitizador previo.',
         code: [
-          '// ❌ PROHIBIDO — inserta HTML sin sanitizar',
+          '// [X] PROHIBIDO — inserta HTML sin sanitizar',
           '<div dangerouslySetInnerHTML={{ __html: contenidoCliente }} />',
           '',
-          '// ✅ ESTÁNDAR OBLIGATORIO — React codifica automáticamente',
+          '// [OK] ESTÁNDAR — React codifica automáticamente',
           '<p>Bienvenido, {nombreCliente}</p>',
           '',
-          '// ✅ SI SE NECESITA HTML — sanitizar primero con DOMPurify',
+          '// [OK] SI SE NECESITA HTML — sanitizar primero con DOMPurify',
           'import DOMPurify from "dompurify";',
           '<div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(html) }} />',
         ],
@@ -108,17 +110,17 @@ const controles = [
         desc: 'Configurar en el servidor el envío obligatorio de los atributos HttpOnly y Secure en todas las cookies de autenticación. HttpOnly impide que scripts inyectados accedan a document.cookie, eliminando el robo de sesión incluso si el XSS logra ejecutarse.',
       },
       {
-        titulo: 'Content Security Policy (CSP) estricta',
-        desc: 'Forzar la cabecera HTTP Content-Security-Policy: default-src \'self\'; script-src \'self\'. Esta política instruye al navegador del cliente a ejecutar únicamente scripts del dominio oficial de CrediExpress, bloqueando cualquier script inline inyectado por un atacante.',
+        titulo: "Content Security Policy (CSP) estricta",
+        desc: "Forzar la cabecera HTTP Content-Security-Policy: default-src 'self'; script-src 'self'. Esta política instruye al navegador del cliente a ejecutar únicamente scripts del dominio oficial de CrediExpress, bloqueando cualquier script inline inyectado por un atacante.",
       },
     ],
   },
 ]
 
 const gobernanza = [
-  { id: 'CRIT-01', vuln: 'Inyección SQL',       marco: 'OWASP A03 / NIST SI-10', resp: 'Dev / Administrador de BD',        freq: 'Por commit / Auditoría trimestral', color: '#c0392b' },
-  { id: 'CRIT-02', vuln: 'Inyección de Comandos', marco: 'OWASP A03 / NIST SI-16', resp: 'Infra / DevSecOps',               freq: 'Por despliegue / Escaneo mensual',  color: '#c0392b' },
-  { id: 'ALTO-01', vuln: 'XSS Reflejado',        marco: 'OWASP A03 / NIST SI-11', resp: 'Dev Frontend / Diseño Web',        freq: 'Por sprint / Revisión automatizada', color: '#e67e22' },
+  { id: 'CRIT-01', vuln: 'Inyección SQL',         marco: 'OWASP A03 / NIST SI-10', resp: 'Dev / Administrador de BD',    freq: 'Por commit / Auditoría trimestral',  color: '#c0392b' },
+  { id: 'CRIT-02', vuln: 'Inyección de Comandos', marco: 'OWASP A03 / NIST SI-16', resp: 'Infra / DevSecOps',             freq: 'Por despliegue / Escaneo mensual',   color: '#c0392b' },
+  { id: 'ALTO-01', vuln: 'XSS Reflejado',         marco: 'OWASP A03 / NIST SI-11', resp: 'Dev Frontend / Diseño Web',     freq: 'Por sprint / Revisión automatizada', color: '#e67e22' },
 ]
 
 export default function Controles() {
@@ -146,26 +148,20 @@ export default function Controles() {
               color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontWeight: 800, fontSize: '15px', flexShrink: 0,
             }}>{c.prioridad}</div>
-            <h2 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: 'var(--text-h)' }}>
-              {c.nombre}
-            </h2>
+            <h2 style={{ margin: 0, fontSize: '17px', fontWeight: 700, color: 'var(--text-h)' }}>{c.nombre}</h2>
             <span style={{ background: c.color, color: '#fff', borderRadius: '4px', padding: '2px 10px', fontSize: '12px', fontWeight: 700 }}>
               {c.idRiesgo} · {c.nivel}
             </span>
           </div>
 
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px', marginTop: '8px' }}>
-            <span style={{ background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '2px 10px', fontSize: '11px', color: 'var(--text-h)', fontWeight: 600 }}>
-              {c.owasp}
-            </span>
-            <span style={{ background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '2px 10px', fontSize: '11px', color: 'var(--text-h)', fontWeight: 600 }}>
-              {c.nist}
-            </span>
+            <span style={{ background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '2px 10px', fontSize: '11px', color: 'var(--text-h)', fontWeight: 600 }}>{c.owasp}</span>
+            <span style={{ background: 'var(--code-bg)', border: '1px solid var(--border)', borderRadius: '4px', padding: '2px 10px', fontSize: '11px', color: 'var(--text-h)', fontWeight: 600 }}>{c.nist}</span>
           </div>
 
-          {/* Prevención */}
-          <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-h)', margin: '0 0 10px', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
-            🛡️ Políticas de Prevención (Causa Raíz)
+          <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-h)', margin: '0 0 10px', borderBottom: '1px solid var(--border)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Icon name="shield" size={18} style={{ color: c.color }} />
+            Políticas de Prevención (Causa Raíz)
           </h3>
           <ul className="steps-list" style={{ marginBottom: '16px' }}>
             {c.prevencion.map((p, i) => (
@@ -177,8 +173,8 @@ export default function Controles() {
                     <div style={{ marginTop: '10px', background: 'var(--code-bg)', borderRadius: '8px', padding: '12px', fontFamily: 'var(--mono)', fontSize: '12px', lineHeight: '1.7' }}>
                       {p.code.map((line, j) => (
                         <div key={j} style={{
-                          color: line.startsWith('// ❌') ? 'var(--accent)'
-                               : line.startsWith('// ✅') ? '#27ae60'
+                          color: line.startsWith('// [X]') ? 'var(--accent)'
+                               : line.startsWith('// [OK]') ? '#27ae60'
                                : line.startsWith('//') ? 'var(--text)'
                                : 'var(--text-h)'
                         }}>{line || '\u00A0'}</div>
@@ -190,24 +186,21 @@ export default function Controles() {
             ))}
           </ul>
 
-          {/* Mitigación */}
-          <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-h)', margin: '0 0 10px', borderBottom: '1px solid var(--border)', paddingBottom: '6px' }}>
-            🔒 Controles de Mitigación (Defensa en Capas)
+          <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--text-h)', margin: '0 0 10px', borderBottom: '1px solid var(--border)', paddingBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Icon name="lock" size={18} style={{ color: c.color }} />
+            Controles de Mitigación (Defensa en Capas)
           </h3>
           <ul className="steps-list">
             {c.mitigacion.map((m, i) => (
               <li key={i}>
                 <span className="step-badge">M{i + 1}</span>
-                <div>
-                  <strong>{m.titulo}:</strong> {m.desc}
-                </div>
+                <div><strong>{m.titulo}:</strong> {m.desc}</div>
               </li>
             ))}
           </ul>
         </div>
       ))}
 
-      {/* Gobernanza */}
       <div className="card">
         <h2 className="card-title">2. Resumen de Gobernanza de Controles</h2>
         <div style={{ overflowX: 'auto' }}>
